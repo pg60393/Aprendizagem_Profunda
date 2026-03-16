@@ -1,4 +1,6 @@
 import numpy as np
+import pickle
+import os
 from layers import Dense, Dropout
 from activation import ReLU, Softmax
 from losses import CategoricalCrossEntropy
@@ -56,13 +58,15 @@ def treinar_dnn(X_train, y_train, X_val, y_val):
 if __name__ == "__main__":
     X_train, y_train, X_val, y_val = carregar_dados()
     
-    # 1. Correr a Baseline
     modelo_base = treinar_baseline(X_train, y_train, X_val, y_val)
     
-    # 2. Correr a DNN complexa
     modelo_dnn = treinar_dnn(X_train, y_train, X_val, y_val)
+
+    os.makedirs('Subm1', exist_ok=True)
+    with open('Subm1/modelo_numpy.pkl', 'wb') as f:
+        pickle.dump(modelo_dnn, f)    
     
-    # 3. Teste final nos dados de validação
+    # Teste final nos dados de validação
     preds_dnn = modelo_dnn.forward(X_val, training=False)
     acc_final = accuracy(preds_dnn, y_val)
     print(f"\nPrecisão Final do Modelo DNN na Validação: {acc_final * 100:.2f}%")

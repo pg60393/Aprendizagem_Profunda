@@ -28,6 +28,5 @@ class CategoricalCrossEntropy(Loss):
             y_true = np.eye(labels)[y_true]
 
         # Gradiente da loss
-        self.dinputs = -y_true / y_pred
-        self.dinputs = self.dinputs / samples
+        self.dinputs = (y_pred - y_true) / samples
         return self.dinputs
