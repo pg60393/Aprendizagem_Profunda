@@ -13,8 +13,10 @@ def carregar_dados():
     X_train = np.load('X_train.npy')
     y_train = np.load('y_train.npy')
     X_val = np.load('X_val.npy')
-    y_val = np.load('y_val.npy')
-    return X_train, y_train, X_val, y_val
+    y_val = np.load('y_val.npy')    
+    X_test = np.load('X_test.npy')
+    y_test = np.load('y_test.npy')
+    return X_train, y_train, X_val, y_val, X_test, y_test
 
 def treinar_baseline(X_train, y_train, X_val, y_val):
     print("\n--- A Treinar Baseline: Regressão Logística (Numpy) ---")
@@ -56,7 +58,7 @@ def treinar_dnn(X_train, y_train, X_val, y_val):
     return model
 
 if __name__ == "__main__":
-    X_train, y_train, X_val, y_val = carregar_dados()
+    X_train, y_train, X_val, y_val, X_test, y_test = carregar_dados()
     
     modelo_base = treinar_baseline(X_train, y_train, X_val, y_val)
 
@@ -74,3 +76,8 @@ if __name__ == "__main__":
     preds_dnn = modelo_dnn.forward(X_val, training=False)
     acc_final = accuracy(preds_dnn, y_val)
     print(f"\nPrecisão Final do Modelo DNN na Validação: {acc_final * 100:.2f}%")
+    
+    # Teste final nos dados de teste
+    preds_test = modelo_dnn.forward(X_test, training=False)
+    acc_test = accuracy(preds_test, y_test)
+    print(f"Precisão Final do Modelo DNN no TEST SET: {acc_test * 100:.2f}%")

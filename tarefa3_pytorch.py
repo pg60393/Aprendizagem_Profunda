@@ -84,7 +84,6 @@ def treinar_modelo():
                 loss = criterion(outputs, labels)
                 val_loss += loss.item()
                 
-                # Extrair a classe com maior probabilidade
                 _, predicted = torch.max(outputs.data, 1)
                 total += labels.size(0)
                 correct += (predicted == labels).sum().item()
@@ -99,6 +98,27 @@ def treinar_modelo():
             torch.save(model.state_dict(), 'Subm1/melhor_modelo_pytorch.pth')
 
     print(f"\nTreino concluído! Melhor precisão na validação: {best_val_acc:.2f}%")
+    
+    # Avaliação final no TEST SET
+    X_test = np.load('X_test.npy').astype(np.float32)
+    y_test = np.load('y_test.npy').astype(np.int64)
+    
+    test_dataset = TensorDataset(torch.tensor(X_test), torch.tensor(y_test))
+    test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False)
+    
+    model.eval()
+    correct = 0
+    total = 0
+    with torch.no_grad():
+        for inputs, labels in test_loader:
+            inputs, labels = inputs.to(device), labels.to(device)
+            outputs = model(inputs)
+            _, predicted = torch.max(outputs.data, 1)
+            total += labels.size(0)
+            correct += (predicted == labels).sum().item()
+    
+    test_acc = 100 * correct / total
+    print(f"Precisão Final no TEST SET: {test_acc:.2f}%")
 
 if __name__ == "__main__":
     treinar_modelo()
