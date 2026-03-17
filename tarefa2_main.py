@@ -39,7 +39,7 @@ def treinar_dnn(X_train, y_train, X_val, y_val):
     # Camada Oculta 1 com Regularização L2
     model.add(Dense(num_features, 128, weight_regularizer_l2=5e-4))
     model.add(ReLU())
-    model.add(Dropout(0.2)) # Melhoria: previne overfitting
+    model.add(Dropout(0.2)) 
     
     # Camada Oculta 2
     model.add(Dense(128, 64))
@@ -59,6 +59,10 @@ if __name__ == "__main__":
     X_train, y_train, X_val, y_val = carregar_dados()
     
     modelo_base = treinar_baseline(X_train, y_train, X_val, y_val)
+
+    preds_base = modelo_base.forward(X_val, training=False)
+    acc_base = accuracy(preds_base, y_val)
+    print(f"\nPrecisão Final da Baseline (Regressão Logística): {acc_base * 100:.2f}%")
     
     modelo_dnn = treinar_dnn(X_train, y_train, X_val, y_val)
 
