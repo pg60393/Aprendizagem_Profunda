@@ -1,3 +1,4 @@
+import random
 import numpy as np
 import pickle
 import os
@@ -10,12 +11,12 @@ from metrics import accuracy
 
 def carregar_dados():
     print("A carregar dados tabulares...")
-    X_train = np.load('X_train.npy')
-    y_train = np.load('y_train.npy')
-    X_val = np.load('X_val.npy')
-    y_val = np.load('y_val.npy')    
-    X_test = np.load('X_test.npy')
-    y_test = np.load('y_test.npy')
+    X_train = np.load('../X_train.npy')
+    y_train = np.load('../y_train.npy')
+    X_val = np.load('../X_val.npy')
+    y_val = np.load('../y_val.npy')
+    X_test = np.load('../X_test.npy')
+    y_test = np.load('../y_test.npy')
     return X_train, y_train, X_val, y_val, X_test, y_test
 
 def treinar_baseline(X_train, y_train, X_val, y_val):
@@ -58,6 +59,11 @@ def treinar_dnn(X_train, y_train, X_val, y_val):
     return model
 
 if __name__ == "__main__":
+    #Para garantir reprodutibilidade
+    SEED = 42
+    random.seed(SEED)
+    np.random.seed(SEED)
+
     X_train, y_train, X_val, y_val, X_test, y_test = carregar_dados()
     
     modelo_base = treinar_baseline(X_train, y_train, X_val, y_val)
@@ -68,8 +74,8 @@ if __name__ == "__main__":
     
     modelo_dnn = treinar_dnn(X_train, y_train, X_val, y_val)
 
-    os.makedirs('Subm1', exist_ok=True)
-    with open('Subm1/modelo_numpy.pkl', 'wb') as f:
+    os.makedirs('../Subm1', exist_ok=True)
+    with open('../Subm1/modelo_numpy.pkl', 'wb') as f:
         pickle.dump(modelo_dnn, f)    
     
     # Teste final nos dados de validação
