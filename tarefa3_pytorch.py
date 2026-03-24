@@ -12,35 +12,32 @@ def set_seed(seed=42):
     np.random.seed(seed)
     torch.manual_seed(seed)
     torch.cuda.manual_seed(seed)
-    torch.cuda.manual_seed_all(seed) # for multi-GPU
+    torch.cuda.manual_seed_all(seed)
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
 
 def carregar_dados_torch():
     print("A carregar dados para PyTorch...")
-
     X_train = np.load('X_train.npy').astype(np.float32)
     X_val = np.load('X_val.npy').astype(np.float32)
+    X_test = np.load('X_test.npy').astype(np.float32)
     
     y_train = np.load('y_train.npy').astype(np.int64) 
     y_val = np.load('y_val.npy').astype(np.int64)
-    return X_train, y_train, X_val, y_val
+    y_test = np.load('y_test.npy').astype(np.int64)
+    return X_train, y_train, X_val, y_val, X_test, y_test
 
 class TextoClassificadorDNN(nn.Module):
     def __init__(self, input_size, num_classes):
         super(TextoClassificadorDNN, self).__init__()
         self.net = nn.Sequential(
-            # Drop 50% of the input features immediately to prevent memorization
             nn.Dropout(0.5), 
             
-            # A single, tiny hidden layer (bottleneck)
             nn.Linear(input_size, 32),
             nn.ReLU(),
             
-            # Drop another 50%
             nn.Dropout(0.5),
             
-            # Output layer
             nn.Linear(32, num_classes) 
         )
 
@@ -51,10 +48,11 @@ def treinar_modelo():
     SEED = 42
     set_seed(SEED)
     
-    X_train, y_train, X_val, y_val = carregar_dados_torch()
+    X_train, y_train, X_val, y_val, X_test, y_test = carregar_dados_torch()
     
     train_dataset = TensorDataset(torch.tensor(X_train), torch.tensor(y_train))
     val_dataset = TensorDataset(torch.tensor(X_val), torch.tensor(y_val))
+    test_dataset = TensorDataset(torch.tensor(X_test), torch.tensor(y_test))
 
     train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
     val_loader = DataLoader(val_dataset, batch_size=64, shuffle=False)
@@ -107,18 +105,17 @@ def treinar_modelo():
         
         if val_acc > best_val_acc:
             best_val_acc = val_acc
-            os.makedirs('Subm1', exist_ok=True)
-            torch.save(model.state_dict(), 'Subm1/melhor_modelo_pytorch.pth')
+            os.makedirs('Subm2', exist_ok=True)
+            torch.save(model.state_dict(), 'Subm2/melhor_modelo_pytorch.pth')
 
     print(f"\nTreino concluído! Melhor precisão na validação: {best_val_acc:.2f}%")
     
-    X_test = np.load('X_test.npy').astype(np.float32)
-    y_test = np.load('y_test.npy').astype(np.int64)
+    model.load_state_dict(torch.load('Subm2/melhor_modelo_pytorch.pth'))
+    model.eval()
     
     test_dataset = TensorDataset(torch.tensor(X_test), torch.tensor(y_test))
     test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False)
     
-    model.eval()
     correct = 0
     total = 0
     with torch.no_grad():
@@ -128,9 +125,8 @@ def treinar_modelo():
             _, predicted = torch.max(outputs.data, 1)
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
-    
-    test_acc = 100 * correct / total
-    print(f"Precisão Final no TEST SET: {test_acc:.2f}%")
+            
+    print(f"Precisão Final no Test Set (PyTorch): {100 * correct / total:.2f}%")
 
 if __name__ == "__main__":
     treinar_modelo()
