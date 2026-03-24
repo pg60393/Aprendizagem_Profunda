@@ -16,20 +16,21 @@
 - `Aprendizagem_Profunda/`
   - `tarefa3_pytorch.py` : Ficheiro de implementação em PyTorch relativo à tarefa 3.
   - `pre_processamento.ipynb` : Notebook com análise e pré-processamento dos dados.
-  - `datasets/` : Ficheiros CSV de dados usados para as tarefas.
-  - `numpy/` : Implementações de rede neural feitas a partir de zero com NumPy.
-    - `neuralnet.py`, `layers.py`, `activation.py`, `losses.py`, `optimizer.py`, `metrics.py`.
+  - `dataset_final.csv` : Ficheiro CSV de dados usados para as tarefas.
+  - `SVC.py.` : Ficheiro de implementação do modelo SVC.
 
 - `Subm1/`
   - Pasta com os ficheiros necessários para a entrega do trabalho correspondentes à 1ª submissão
   - Inclui os ficheiros `subm1-g6-MIA-A.csv`, `subm1-g6-MIA-B.csv` e notebooks com os 2 melhores modelos treinados pelo grupo.
+  
+- `Subm2/`
+  - Pasta com os ficheiros necessários para a entrega do trabalho correspondentes à 2ª submissão
+  - Inclui os ficheiros `subm2-g6-MIA-A.csv`, `subm2-g6-MIA-B.csv` e notebooks com os 2 melhores modelos treinados pelo grupo.
 
 ### Como correr
 1. Executar [pre_processamento.ipynb](https://github.com/pg60393/Aprendizagem_Profunda/blob/main/pre_processamento.ipynb) para a criação dos ficheiros .npy de treino, validação e teste.
-2. Entrar na pasta `numpy/`. `python cd numpy`
-3. Executar [tarefa2_main.py](https://github.com/pg60393/Aprendizagem_Profunda/blob/main/numpy/tarefa2_main.py) para treinar e avaliar o modelo em NumPy. `python tarefa2_main.py`
-4. Sair da pasta `numpy/`. `cd ..`
-5. Executar [tarefa3_pytorch.py](https://github.com/pg60393/Aprendizagem_Profunda/blob/main/tarefa3_pytorch.py) para treinar e avaliar o modelo em PyTorch. `python tarefa3_pytorch.py`
-6. Entrar na pasta `Subm1/`. `cd Subm1`
-7. Executar [subm1-g6-MIA-A.ipynb](https://github.com/pg60393/Aprendizagem_Profunda/blob/main/Subm1/subm1-g6-MIA-A.ipynb).
-8. Executar [subm1-g6-MIA-B.ipynb](https://github.com/pg60393/Aprendizagem_Profunda/blob/main/Subm1/subm1-g6-MIA-B.ipynb).
+2. Executar [SVC.py](https://github.com/pg60393/Aprendizagem_Profunda/blob/main/SVC.py) para treinar e avaliar o modelo SVC. `python SVC.py`
+3. Executar [tarefa3_pytorch.py](https://github.com/pg60393/Aprendizagem_Profunda/blob/main/tarefa3_pytorch.py) para treinar e avaliar o modelo em PyTorch. `python tarefa3_pytorch.py`
+4. Entrar na pasta `Subm2/`. `cd Subm2`
+5. Executar [subm2-g6-MIA-A.ipynb](https://github.com/pg60393/Aprendizagem_Profunda/blob/main/Subm2/subm2-g6-MIA-A.ipynb).
+6. Executar [subm2-g6-MIA-B.ipynb](https://github.com/pg60393/Aprendizagem_Profunda/blob/main/Subm2/subm2-g6-MIA-B.ipynb).
