@@ -105,12 +105,12 @@ def treinar_modelo():
         
         if val_acc > best_val_acc:
             best_val_acc = val_acc
-            os.makedirs('Subm2', exist_ok=True)
-            torch.save(model.state_dict(), 'Subm2/melhor_modelo_pytorch.pth')
+            os.makedirs('Subm3', exist_ok=True)
+            torch.save(model.state_dict(), 'Subm3/melhor_modelo_pytorch.pth')
 
     print(f"\nTreino concluído! Melhor precisão na validação: {best_val_acc:.2f}%")
     
-    model.load_state_dict(torch.load('Subm2/melhor_modelo_pytorch.pth'))
+    model.load_state_dict(torch.load('Subm3/melhor_modelo_pytorch.pth'))
     model.eval()
     
     test_dataset = TensorDataset(torch.tensor(X_test), torch.tensor(y_test))

@@ -59,8 +59,8 @@ def treinar_melhor_modelo():
     print("\nConfusion Matrix:")
     print(confusion_matrix(y_test, final_preds))
 
-    os.makedirs('Subm2', exist_ok=True)
-    with open('Subm2/melhor_modelo_svc.pkl', 'wb') as f:
+    os.makedirs('Subm3', exist_ok=True)
+    with open('Subm3/melhor_modelo_svc.pkl', 'wb') as f:
         pickle.dump(final_model, f)
 
 if __name__ == "__main__":
